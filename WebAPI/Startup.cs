@@ -14,6 +14,7 @@ using WebAPI.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using WebAPI.Installers;
 using WebAPI.Options;
 
 namespace WebAPI
@@ -30,18 +31,7 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddEntityFrameworkStores<DataContext>();
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
-            services.AddSwaggerGen(x =>
-            {
-                x.SwaggerDoc("v1",new OpenApiInfo(){Title = "WebAPI",Version = "v1"});
-            });
+            services.InstallServicesAssembly(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
